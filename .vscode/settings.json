@@ -5,7 +5,7 @@
     "stdio.h": "c",
     "lab1.h": "c"
   },
-  "C_Cpp_Runner.cCompilerPath": "C:/msys64/mingw64/bin/gcc.exe",
+  "C_Cpp_Runner.cCompilerPath": "/bin/gcc",
   "C_Cpp_Runner.cppCompilerPath": "C:/msys64/mingw64/bin/g++.exe",
   "C_Cpp_Runner.debuggerPath": "C:/msys64/mingw64/bin/gdb.exe",
   "C_Cpp_Runner.cStandard": "",
