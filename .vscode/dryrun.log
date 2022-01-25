@@ -1,0 +1,6 @@
+make.exe --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/c/Users/hossa/OneDrive - University of Toronto/Courses/ESC190/C Code'
+make: Leaving directory '/c/Users/hossa/OneDrive - University of Toronto/Courses/ESC190/C Code'
+ 
+make: *** No targets specified and no makefile found.  Stop.
+ 
