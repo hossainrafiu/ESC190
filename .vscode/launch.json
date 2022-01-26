@@ -10,7 +10,7 @@
       "stopAtEntry": false,
       "cwd": "${fileDirname}",
       "environment": [],
-      "console": "externalTerminal",
+      "console": "integratedTerminal",
       "preLaunchTask": "C/C++: gcc.exe build active file"
     },
     

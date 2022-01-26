@@ -5,9 +5,7 @@ int main(){
 
     int x = 0;
     int y = x;
-    fprintf(stdout , "y contains the value %d at location %p\n", y , &y);
-    y = &x;
-
+    
     int* ptr_x = &x;
     int* ptr_y = &y;
     int** pptr_x = &ptr_x;
