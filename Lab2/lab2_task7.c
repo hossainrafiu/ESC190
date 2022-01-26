@@ -22,6 +22,7 @@ HINT : you may find the function realloc (...) helpful
     }
 }
 
+/*
 int main(){
 
     int n = 0;
@@ -35,6 +36,7 @@ int main(){
     fprintf (stdout," Values of x through dereferencing 0: %d, 1: %d, 2: %d\n",*x, *(x + 1), *(x + 2));
 
 }
+*/
 
 /*
 Would you be able to implement this function if the first parameter was changed

@@ -10,6 +10,8 @@ int main(){
     free (p);
     fprintf (stdout , " Value stored at address %p: %d\n", p, *p);
 
+    return 0;
+
 }
 
 /*

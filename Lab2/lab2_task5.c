@@ -12,6 +12,8 @@ int main(){
     free (q); 
     free (p); 
 
+    return 0;
+
 }
 /*
 

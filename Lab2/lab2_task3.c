@@ -16,6 +16,8 @@ int main(){
     fprintf (stdout," Values of x through indexing 0: %d, 1: %d, 2: %d\n", x[0] , x[1] , x[2]);
     fprintf (stdout," Indexing out of range : %d\n", x[3]);
 
+    return 0;
+
     /*
         What happens when you attempt to access an element out of range of the array allocated?
 

@@ -14,6 +14,8 @@ int main(){
     fprintf(stdout,"x contains the value %d at location %p\n", *ptr_x , ptr_x);
     fprintf(stdout , "y contains the value %d at location %p\n", *ptr_y , ptr_y);
 
+    return 0;
+
 }
 
 /*
