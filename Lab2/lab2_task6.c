@@ -24,6 +24,8 @@ int main(){
 
 /*
 
+valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./lab2_task6
+
 Draw a memory model for the above code. You may use arbitrary memory
 addresses to simplify the task.
 
