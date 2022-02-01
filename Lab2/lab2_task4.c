@@ -26,7 +26,8 @@ There is not memory leak.
 
     What parts of Valgrind’s output helps you identify the problem in the code?
 
-Near the end of its output Valgrind either says no leaks are possible or it lists what was lost.
+Near the end of its output Valgrind either says no leaks are possible or it lists what was lost
+(size of memory allocated and by which line (variable) in the .c file when using -g flag).
 
     Try compiling your executable with the -g flag, and rerun the command above.
     What is the difference between compiling with vs. without the -g flag?
