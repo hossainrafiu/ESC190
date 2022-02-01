@@ -39,14 +39,22 @@ int main(){
 */
 
 /*
-Would you be able to implement this function if the first parameter was changed
-to int* x? Explain why or why not.
+    Would you be able to implement this function if the first parameter was changed
+    to int* x? Explain why or why not.
 
+Yes because you still pass the value of x to the function which is the 
+first memory location of the allocated memory of x which can be modified with realloc.
+Essentially, all that would be needed is to get rid of a star from each location of x
+in the function and it SEEMS!!!!! to function the same.
 
+    Would you be able to implement this function if the second parameter was
+    changed to int n? Explain why or why not.
 
-Would you be able to implement this function if the second parameter was
-changed to int n? Explain why or why not.
+No because you do not have access to the address of n as you do not have a pointer 
+so you cannot modify the value outside the function,
+only the copy that was passed into the function.
 
-
-
+No because even if you pass the address of the integer to the function, you can't de-refernce 
+and change the value at the memory address because n isn't a pointer. The value of n is just
+the integer value of the memory address.
 */

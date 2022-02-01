@@ -36,8 +36,10 @@ What are the values of *pptr x, *pptr y, **pptr x, **pptr y?
 **pptr x = 0
 **pptr y = 0
 
+
+
 How could you make x and y share the same location in memory?
 
-????
+    Not Possible
 
 */
