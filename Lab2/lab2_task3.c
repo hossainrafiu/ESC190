@@ -37,7 +37,7 @@ int main(){
     x          0x7fffffffdeac   1       *x / x[0]
     x + 1      0x7fffffffdeb0   5       *(x + 1) / x[1]
     x + 2      0x7fffffffdeb4   9       *(x + 2) / x[2]
-    y          0x7fffffffdea4   1       *y / x[0]
+    y          0x7fffffffdea4   1       *y / y[0]
     y + 1      0x7fffffffdea8   5       *(y + 1) / y[1]
     */
 

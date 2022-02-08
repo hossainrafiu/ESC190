@@ -14,9 +14,13 @@ HINT : you may find the function realloc (...) helpful
     fprintf (stdout," %p\n", *x);
     fprintf (stdout," %d\n", *x);
     fprintf (stdout," %d\n", *n);
+    
+    
     x = realloc(x, (*n + 1)*sizeof(int));
     *(x + *n) = val;
     *n += 1;
+    
+    
     for(int j = 0; j < *n; j++) {
         fprintf(stdout, "%d\n", *(x + j));
     }
@@ -43,7 +47,11 @@ int main(){
 Yes because you still pass the value of x to the function which is the 
 first memory location of the allocated memory of x which can be modified with realloc.
 Essentially, all that would be needed is to get rid of a star from each location of x
-in the function and it SEEMS!!!!! to function the same.
+in the function and it seems to function the same.
+
+ADDED: But in the chance that realloc reallocates memory to another place, then the
+function no longer works as the original variable x no longer points to the new
+allocated place in memory.
 
     Would you be able to implement this function if the second parameter was
     changed to int n? Explain why or why not.
