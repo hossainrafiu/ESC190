@@ -3,6 +3,9 @@
 
 int main(){
     //Empty list
+
+    printf("Working \n");
+
     struct party_node *head = NULL;
 
     int check_add = 0;
