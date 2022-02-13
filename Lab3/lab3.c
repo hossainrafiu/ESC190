@@ -1,4 +1,5 @@
 #include "lab3.h"
+#include <string.h>
 
 /*
 Is LIFO a good method for handling the party requests? Why or
@@ -27,6 +28,7 @@ int add_request(struct party_node **head, char *item, double price, char *ta){
 
 //Remove the last item added
 void remove_request(struct party_node **head){
+    if (*head == NULL) return;
     struct party_node* temp = *head;
     *head = (*head)->next;
     free(temp);
