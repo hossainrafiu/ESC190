@@ -17,9 +17,11 @@ int add_request(struct party_node **head, char *item, double price, char *ta){
     }
     else {
         struct party_node* new_request = (struct party_node*)malloc(sizeof(struct party_node));
-        new_request -> item = item;
+        new_request -> item = (char*)malloc(sizeof(char)*(strlen(item)+1));
+        strcpy(new_request -> item, item);
         new_request -> price = price;
-        new_request -> ta = ta;
+        new_request -> ta = (char*)malloc(sizeof(char)*(strlen(ta)+1));
+        strcpy(new_request -> ta, ta);
         new_request -> next = *head;
         *head = new_request;
         return 0;
@@ -29,6 +31,8 @@ int add_request(struct party_node **head, char *item, double price, char *ta){
 //Remove the last item added
 void remove_request(struct party_node **head){
     if (*head == NULL) return;
+    free((*head)->item);
+    free((*head)->ta);
     struct party_node* temp = *head;
     *head = (*head)->next;
     free(temp);
@@ -95,10 +99,14 @@ double finalize_list(struct party_node **head, double budget){
         if(curr -> price > leftover){
             if(prev == NULL){
                 *head = curr -> next;
+                free(curr->item);
+                free(curr->ta);
                 free(curr);
                 curr = *head;
             }else{
                 prev -> next = curr -> next;
+                free(curr->item);
+                free(curr->ta);
                 free(curr);
                 curr = prev -> next;
             }
