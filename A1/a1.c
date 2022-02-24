@@ -112,6 +112,7 @@ Order* build_order(char* items, char* quantities){
         item_quan = strtok(NULL, MENU_DELIM);
         item_num++;
     }
+	free(temp);
 
 	new_order->item_quantities = item_quantities;
 
@@ -136,9 +137,13 @@ void enqueue_order(Order* order, Restaurant* restaurant){
 	}
 	restaurant->num_pending_orders++;
 }
+
 Order* dequeue_order(Restaurant* restaurant){
 	Order* order = restaurant->pending_orders->head->order;
+	QueueNode* temp = restaurant->pending_orders->head;
 	restaurant->pending_orders->head = restaurant->pending_orders->head->next;
+	free(temp);
+	// Only one item left in Queue
 	if(restaurant->pending_orders->head == NULL){
 		restaurant->pending_orders->tail == NULL;
 	}
@@ -146,13 +151,17 @@ Order* dequeue_order(Restaurant* restaurant){
 	restaurant->num_completed_orders++;
 	return order;
 }
+
+
 double get_item_cost(char* item_code, Menu* menu){
 	int index = 0;
-	while (menu->item_codes[index] != item_code){
+	while (strcmp((menu->item_codes)[index],item_code)==0){
 		index++;
 	}
-	return menu->item_cost_per_unit[index];
+	return (menu->item_cost_per_unit)[index];
 }
+
+
 double get_order_subtotal(Order* order, Menu* menu){
 	double subtotal = 0;
 	for (int i = 0; i < order->num_items; i++){
@@ -162,16 +171,24 @@ double get_order_subtotal(Order* order, Menu* menu){
 	}
 	return subtotal;
 }
+
+
 double get_order_total(Order* order, Menu* menu){
 	double subtotal = get_order_subtotal(order, menu);
-	return subtotal * TAX_RATE;
+	return subtotal + subtotal * TAX_RATE / 100;
 }
+
+
 int get_num_completed_orders(Restaurant* restaurant){
 	return restaurant->num_completed_orders;
 }
+
+
 int get_num_pending_orders(Restaurant* restaurant){
 	return restaurant->num_pending_orders;
 }
+
+
 void clear_order(Order** order){
 	free((*order)->item_quantities);
 	for (int i = 0; i<(*order)->num_items ; i++){
@@ -181,6 +198,15 @@ void clear_order(Order** order){
 	free(*order);
 	*order = NULL;
 }
+/*
+typedef struct Order {
+	int num_items;
+	char** item_codes;
+	int* item_quantities;
+} Order;
+*/
+
+
 void clear_menu(Menu** menu){
 	free((*menu)->item_cost_per_unit);
 	for (int i = 0; i<(*menu)->num_items ; i++){
@@ -192,10 +218,13 @@ void clear_menu(Menu** menu){
 	free(*menu);
 	*menu = NULL;
 }
+
+
 void close_restaurant(Restaurant** restaurant){
 	clear_menu(&((*restaurant)->menu));
 	while((*restaurant)->pending_orders->head != NULL){
-		free(dequeue_order(*restaurant));
+		Order* temp = dequeue_order(*restaurant);
+		clear_order(&temp);
 	}
 	free((*restaurant)->pending_orders);
 	free(*restaurant);
