@@ -7,6 +7,201 @@
 	when you submit.
 */
 
+Restaurant* initialize_restaurant(char* name){
+
+	Restaurant *new_restaurant = (Restaurant *) malloc(sizeof(struct Restaurant));
+
+	new_restaurant->name = name;
+	new_restaurant->menu = load_menu("menu.txt");
+	new_restaurant->num_completed_orders = 0;
+	new_restaurant->num_pending_orders = 0;
+	
+	Queue* new_queue = (Queue *) malloc(sizeof(struct Queue));
+	new_queue->head = NULL;
+	new_queue->tail = NULL;
+	
+	new_restaurant->pending_orders = new_queue;
+
+	return new_restaurant;
+}
+
+// MAKE SURE THAT STRING ENDS WITH NULL CHARACTER
+Menu* load_menu(char* fname){
+	//printf("function has started\n");
+	//fflush(stdout);
+	FILE* menu_file;
+	menu_file = fopen(fname, "r");
+	Menu* menu = (Menu *) malloc(sizeof(struct Menu));
+	int num_items = 0;
+	//printf("reached here\n");
+	//fflush(stdout);
+	char c;
+	// what is the behaviour if several blank lines are present at the end?
+	while(c != EOF) {
+		c = fgetc(menu_file);
+		if (c == '$') {
+			num_items++;
+		}
+	}
+	rewind(menu_file);
+	//printf("%d\n", num_items);
+	//fflush(stdout);
+	menu->num_items = num_items;
+	char** item_codes = (char **) malloc(num_items * sizeof(char*));
+	char** item_names = (char **) malloc(num_items * sizeof(char*));
+	double* item_cost_per_unit = (double *) malloc(num_items * sizeof(double));
+	for (int i = 0; i < num_items; i++) {
+		char* x;
+		char* y;
+		char* z;
+		//printf("got to x\n");
+		//fflush(stdout);
+		// get proper maximum length
+		char temp[255];
+		char* line = fgets(temp, sizeof(temp) , menu_file);
+		//printf("%s",line);
+		//fflush(stdout);
+		x = strtok(line, MENU_DELIM);
+		y = strtok(NULL, MENU_DELIM);
+		z = strtok(NULL, MENU_DELIM);
+		
+		char* z_temp = (char*)malloc(strlen(z));
+		strncpy(z_temp,&z[1],strlen(z)-1);
+		double z_double = atof(z_temp);
+		free(z_temp);
+		
+		item_codes[i] = (char *)malloc(sizeof(x));
+		strcpy(item_codes[i],x);
+		
+		item_names[i] = (char *)malloc(sizeof(y));
+		strcpy(item_names[i],y);
+		
+		item_cost_per_unit[i] = z_double;
+		//printf("%s\n%s\n%s\n",x,y,z);
+		//printf("%s\n%s\n%f\n",item_codes[i], item_names[i], item_cost_per_unit[i]);
+
+	}
+	//printf("hello%s\n%s\n%f\n",item_codes[0], item_names[0], item_cost_per_unit[0]);
+	//printf("almost at the end");
+	//fflush(stdout);
+	menu->item_codes = item_codes;
+	//printf("%s", *item_codes);
+	menu->item_names = item_names;
+	menu->item_cost_per_unit = item_cost_per_unit;
+	
+	fclose(menu_file);
+	return menu;
+}
+
+
+Order* build_order(char* items, char* quantities){
+
+	Order* new_order = (Order *) malloc(sizeof(struct Order));
+	int num_of_items = strlen(items)/(ITEM_CODE_LENGTH-1);
+	char** item_codes = (char **) malloc(sizeof(char*)*num_of_items);
+	int* item_quantities = (int *) malloc(sizeof(int)*num_of_items);
+
+	new_order->num_items = num_of_items;
+	
+	char* item_quan;
+	char* temp = strdup(quantities);
+	item_quan = strtok(temp,MENU_DELIM);
+    int item_num = 0;
+	while(item_quan != NULL){
+	    item_quantities[item_num] = atoi(item_quan);
+        item_quan = strtok(NULL, MENU_DELIM);
+        item_num++;
+    }
+
+	new_order->item_quantities = item_quantities;
+
+	for (int i = 0; i < num_of_items ; i++){
+		item_codes[i] = (char *)calloc(sizeof(char),ITEM_CODE_LENGTH);
+		strncpy(item_codes[i],&items[(ITEM_CODE_LENGTH-1)*i],ITEM_CODE_LENGTH-1);
+	}
+	new_order->item_codes = item_codes;
+
+	return new_order;
+}
+
+void enqueue_order(Order* order, Restaurant* restaurant){
+	QueueNode* new_queue_node = (QueueNode *)malloc(sizeof(struct QueueNode));
+	new_queue_node->order = order;
+	if (restaurant->pending_orders->head == NULL) {
+		restaurant->pending_orders->head = new_queue_node;
+		restaurant->pending_orders->tail = new_queue_node;
+	} else {
+		restaurant->pending_orders->tail->next = new_queue_node;
+		restaurant->pending_orders->tail = new_queue_node;
+	}
+	restaurant->num_pending_orders++;
+}
+Order* dequeue_order(Restaurant* restaurant){
+	Order* order = restaurant->pending_orders->head->order;
+	restaurant->pending_orders->head = restaurant->pending_orders->head->next;
+	if(restaurant->pending_orders->head == NULL){
+		restaurant->pending_orders->tail == NULL;
+	}
+	restaurant->num_pending_orders--;
+	restaurant->num_completed_orders++;
+	return order;
+}
+double get_item_cost(char* item_code, Menu* menu){
+	int index = 0;
+	while (menu->item_codes[index] != item_code){
+		index++;
+	}
+	return menu->item_cost_per_unit[index];
+}
+double get_order_subtotal(Order* order, Menu* menu){
+	double subtotal = 0;
+	for (int i = 0; i < order->num_items; i++){
+		char* item = (order->item_codes)[i];
+		double item_cost = get_item_cost(item, menu);
+		subtotal += item_cost*(double)(order->item_quantities)[i];
+	}
+	return subtotal;
+}
+double get_order_total(Order* order, Menu* menu){
+	double subtotal = get_order_subtotal(order, menu);
+	return subtotal * TAX_RATE;
+}
+int get_num_completed_orders(Restaurant* restaurant){
+	return restaurant->num_completed_orders;
+}
+int get_num_pending_orders(Restaurant* restaurant){
+	return restaurant->num_pending_orders;
+}
+void clear_order(Order** order){
+	free((*order)->item_quantities);
+	for (int i = 0; i<(*order)->num_items ; i++){
+		free(((*order)->item_codes)[i]);
+	}
+	free((*order)->item_codes);
+	free(*order);
+	*order = NULL;
+}
+void clear_menu(Menu** menu){
+	free((*menu)->item_cost_per_unit);
+	for (int i = 0; i<(*menu)->num_items ; i++){
+		free(((*menu)->item_codes)[i]);
+		free(((*menu)->item_names)[i]);
+	}
+	free((*menu)->item_codes);
+	free((*menu)->item_names);
+	free(*menu);
+	*menu = NULL;
+}
+void close_restaurant(Restaurant** restaurant){
+	clear_menu(&((*restaurant)->menu));
+	while((*restaurant)->pending_orders->head != NULL){
+		free(dequeue_order(*restaurant));
+	}
+	free((*restaurant)->pending_orders);
+	free(*restaurant);
+	*restaurant = NULL;
+}
+
 
 void print_menu(Menu* menu){
 	fprintf(stdout, "--- Menu ---\n");
