@@ -27,16 +27,11 @@ Restaurant* initialize_restaurant(char* name){
 
 // MAKE SURE THAT STRING ENDS WITH NULL CHARACTER
 Menu* load_menu(char* fname){
-	//printf("function has started\n");
-	//fflush(stdout);
 	FILE* menu_file;
 	menu_file = fopen(fname, "r");
 	Menu* menu = (Menu *) malloc(sizeof(struct Menu));
 	int num_items = 0;
-	//printf("reached here\n");
-	//fflush(stdout);
 	char c;
-	// what is the behaviour if several blank lines are present at the end?
 	while(c != EOF) {
 		c = fgetc(menu_file);
 		if (c == '$') {
@@ -44,8 +39,6 @@ Menu* load_menu(char* fname){
 		}
 	}
 	rewind(menu_file);
-	//printf("%d\n", num_items);
-	//fflush(stdout);
 	menu->num_items = num_items;
 	char** item_codes = (char **) malloc(num_items * sizeof(char*));
 	char** item_names = (char **) malloc(num_items * sizeof(char*));
@@ -54,13 +47,11 @@ Menu* load_menu(char* fname){
 		char* x;
 		char* y;
 		char* z;
-		//printf("got to x\n");
-		//fflush(stdout);
-		// get proper maximum length
-		char temp[255];
+		char temp[ITEM_CODE_LENGTH + MAX_ITEM_NAME_LENGTH + MAX_ITEM_QUANTITY_DIGITS + 10];
 		char* line = fgets(temp, sizeof(temp) , menu_file);
-		//printf("%s",line);
-		//fflush(stdout);
+		while(*line == ' ' || *line == '\r' || *line == '\t') {
+			line ++;
+		}
 		x = strtok(line, MENU_DELIM);
 		y = strtok(NULL, MENU_DELIM);
 		z = strtok(NULL, MENU_DELIM);
@@ -70,22 +61,15 @@ Menu* load_menu(char* fname){
 		double z_double = atof(z_temp);
 		free(z_temp);
 		
-		item_codes[i] = (char *)malloc(sizeof(x));
+		item_codes[i] = (char *)calloc(sizeof(char), ITEM_CODE_LENGTH);
 		strcpy(item_codes[i],x);
 		
-		item_names[i] = (char *)malloc(sizeof(y));
+		item_names[i] = (char *)calloc(sizeof(char), MAX_ITEM_NAME_LENGTH);
 		strcpy(item_names[i],y);
 		
 		item_cost_per_unit[i] = z_double;
-		//printf("%s\n%s\n%s\n",x,y,z);
-		//printf("%s\n%s\n%f\n",item_codes[i], item_names[i], item_cost_per_unit[i]);
-
 	}
-	//printf("hello%s\n%s\n%f\n",item_codes[0], item_names[0], item_cost_per_unit[0]);
-	//printf("almost at the end");
-	//fflush(stdout);
 	menu->item_codes = item_codes;
-	//printf("%s", *item_codes);
 	menu->item_names = item_names;
 	menu->item_cost_per_unit = item_cost_per_unit;
 	
@@ -155,7 +139,7 @@ Order* dequeue_order(Restaurant* restaurant){
 
 double get_item_cost(char* item_code, Menu* menu){
 	int index = 0;
-	while (strcmp((menu->item_codes)[index],item_code)==0){
+	while (strcmp((menu->item_codes)[index],item_code)!=0){
 		index++;
 	}
 	return (menu->item_cost_per_unit)[index];
@@ -198,13 +182,6 @@ void clear_order(Order** order){
 	free(*order);
 	*order = NULL;
 }
-/*
-typedef struct Order {
-	int num_items;
-	char** item_codes;
-	int* item_quantities;
-} Order;
-*/
 
 
 void clear_menu(Menu** menu){
