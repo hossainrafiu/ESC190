@@ -12,7 +12,7 @@ Restaurant* initialize_restaurant(char* name){
 	Restaurant *new_restaurant = (Restaurant *) malloc(sizeof(struct Restaurant));
 
 	new_restaurant->name = name;
-	new_restaurant->menu = load_menu("menu.txt");
+	new_restaurant->menu = load_menu(MENU_FNAME);
 	new_restaurant->num_completed_orders = 0;
 	new_restaurant->num_pending_orders = 0;
 	
