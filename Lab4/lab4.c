@@ -306,3 +306,31 @@ void print_with_rank(PlayerRecord* root){
 	free(players_at_curr_rank);
 }
 
+
+/*
+
+What are the best- and worst- case runtimes of the provided implementations?
+Identify any modifications you can make to the implementations to improve their runtimes, if any. Explain to your TA.
+
+-----------------------------------------
+
+For clear_tournament_records(),
+Best case Ω(1) when *root == NUll
+Worst case O(n) where n is the number of player records
+	2(2n-1)
+		-> Adding each Player to double pointer + freeing each Player
+	n
+Though this would not improve complexity, runtime could possibly be improved by freeing within the helper function 
+so that one does not to transverse the array again
+
+For print_with_rank(),
+Best case is Ω(1)
+Worst case is O(n^2*lnn)
+	(log 2 n + 1) * (2^(log 2 n + 1) - 1) * (2n)
+		-> Num of rank * Num of Player Records * (Compexity of get_player_rank() + player in list())
+	2n * log 2 n * (2n + 1)
+	n ^ 2 * logn
+Complexity could be made O(n) with a similar implimentation as get_player_rank that creates the queue, O(n) and the prints
+it, also O(n). To the struct should be added a boolean value that is set to false for right children so that they
+are not printed twice.
+*/
