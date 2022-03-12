@@ -1,5 +1,32 @@
 #include "lab4.h"
 
+typedef struct SearchQueue {
+	struct PlayerRecord* player_record;
+	struct SearchQueue* next;
+	int rank;
+} SearchQueue;
+
+void pop(SearchQueue** head) {
+	SearchQueue* temp = *head; 
+	*head = (*head) -> next;
+	free(temp);
+}
+
+void push(SearchQueue** tail, PlayerRecord* player_record, int rank) {
+	SearchQueue* new_node = (SearchQueue*) malloc(sizeof(SearchQueue));
+	(*tail) -> next = new_node;
+	new_node -> next = NULL;
+	new_node -> player_record = player_record;
+	new_node -> rank = rank;
+	*tail = new_node;
+}
+
+void empty_queue(SearchQueue** head){
+	while(*head != NULL){
+		pop(head);
+	}
+}
+
 Player* create_player(char name[], char id[]){
 	/**
 		Creates and returns a pointer to a newly
@@ -10,6 +37,10 @@ Player* create_player(char name[], char id[]){
 		
 		Hint: strcpy(...) from <string.h> may be helpful.
 	*/
+	Player* new_player = (Player*) malloc(sizeof(Player));
+	strcpy(new_player -> name, name);
+	strcpy(new_player -> id, id);
+	return new_player;
 }
 
 PlayerRecord* create_leaf_record(Player* p){
@@ -28,6 +59,15 @@ PlayerRecord* create_leaf_record(Player* p){
 		
 		The player field should be set to <p>.
 	*/
+	PlayerRecord* new_record = (PlayerRecord*)malloc(sizeof(PlayerRecord));
+	new_record -> player = p;
+	new_record -> game_records[0] = 0;
+	new_record -> game_records[1] = 0;
+	new_record -> parent = NULL;
+	new_record -> left_child = NULL;
+	new_record -> right_child = NULL;
+
+	return new_record;
 
 }
 
@@ -52,6 +92,27 @@ PlayerRecord* add_match(
 	<p1->parent> and <p2->parent> are guaranteed to be NULL.
 	*/
 
+	PlayerRecord* new_record = (PlayerRecord*)malloc(sizeof(PlayerRecord));
+	p1->parent = new_record;
+	p2->parent = new_record;
+	if (p1_wins > p2_wins){
+		new_record -> player = p1 -> player;
+		new_record -> game_records[WINS] = p1_wins;
+		new_record -> game_records[LOSSES] = p2_wins;
+		new_record -> left_child = p1;
+		new_record -> right_child = p2;	
+	}
+	else{
+		new_record -> player = p2 -> player;
+		new_record -> game_records[WINS] = p2_wins;
+		new_record -> game_records[LOSSES] = p1_wins;
+		new_record -> left_child = p2;
+		new_record -> right_child = p1;
+	}
+	new_record -> parent = NULL;
+	
+	return new_record;
+
 }
 
 int get_player_rank(char player_id[], PlayerRecord* root){
@@ -61,7 +122,37 @@ int get_player_rank(char player_id[], PlayerRecord* root){
 	
 	You may assume that each player has a unique id.
 	*/
+	
+	if(root == NULL) {
+		return -1; // queue is empty
+	}
+	
+	SearchQueue* head = (SearchQueue*)malloc(sizeof(SearchQueue));
+	SearchQueue* tail = head;
+	
+	head -> player_record = root;
+	head -> rank = 1;
+	head -> next = NULL;
 
+	while(head != NULL){
+		if(strcmp(head -> player_record -> player -> id, player_id) == 0) {
+			int rank = head -> rank;
+			empty_queue(&head);
+			return rank;
+		}
+		else{
+			if(head -> player_record -> left_child != NULL) {
+				push(&tail, head -> player_record -> left_child, head -> rank + 1);
+
+			}
+			if(head -> player_record -> right_child != NULL) {
+				push(&tail, head -> player_record -> right_child, head -> rank + 1);
+
+			}
+			pop(&head);
+		}
+	}	
+	return -1; // could not find it
 }
 
 /**
@@ -117,7 +208,7 @@ void clear_tournament_records(PlayerRecord** root){
 		EXCLUDING the Player(s)
 	*/
 	int num_records = 0;
-	int max_records = 10;
+	int max_records = 20;
 	
 	PlayerRecord** records = (PlayerRecord**)malloc(sizeof(PlayerRecord*) * max_records);
 	if ((*root) != NULL){
@@ -212,5 +303,6 @@ void print_with_rank(PlayerRecord* root){
 		}
 		curr_rank++;
 	} while (count_el != 0);
+	free(players_at_curr_rank);
 }
 
