@@ -166,7 +166,7 @@ void clear_tournament_records_helper(
 	int* num_records, int* max_records
 ){
 	/**
-		Performs a post-order traversal to retrieve all
+		Performs a pre-order traversal to retrieve all
 		the player records and stores them in <records>,
 		an array of pointer to PlayerRecord.
 		
@@ -178,6 +178,15 @@ void clear_tournament_records_helper(
 		of records.
 	*/
 		
+	if ((*max_records) == (*num_records)){
+		// resize
+		(*records) = realloc(*records, sizeof(PlayerRecord*) * (*max_records) * 2);
+		(*max_records) *= 2;
+	} 
+	
+	(*records)[*num_records] = curr;
+	(*num_records)++;
+
 	if (curr->left_child != NULL){
 		clear_tournament_records_helper(
 			curr->left_child, records, 
@@ -191,15 +200,6 @@ void clear_tournament_records_helper(
 			num_records, max_records
 		);
 	}
-	
-	if ((*max_records) == (*num_records)){
-		// resize
-		records = realloc(records, sizeof(PlayerRecord*) * (*max_records) * 2);
-		(*max_records) *= 2;
-	} 
-	records[*num_records] = curr;
-	(*num_records)++;
-	
 }
 
 void clear_tournament_records(PlayerRecord** root){
