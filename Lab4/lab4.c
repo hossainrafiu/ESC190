@@ -208,7 +208,7 @@ void clear_tournament_records(PlayerRecord** root){
 		EXCLUDING the Player(s)
 	*/
 	int num_records = 0;
-	int max_records = 20;
+	int max_records = 10;
 	
 	PlayerRecord** records = (PlayerRecord**)malloc(sizeof(PlayerRecord*) * max_records);
 	if ((*root) != NULL){
