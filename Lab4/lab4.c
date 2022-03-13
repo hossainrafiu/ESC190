@@ -162,7 +162,7 @@ int get_player_rank(char player_id[], PlayerRecord* root){
 */
 
 void clear_tournament_records_helper(
-	PlayerRecord* curr, PlayerRecord** records, 
+	PlayerRecord* curr, PlayerRecord*** records, 
 	int* num_records, int* max_records
 ){
 	/**
@@ -177,10 +177,10 @@ void clear_tournament_records_helper(
 		<*num_records> is updated to reflect the total number 
 		of records.
 	*/
-		
+
 	if ((*max_records) == (*num_records)){
 		// resize
-		(*records) = realloc(*records, sizeof(PlayerRecord*) * (*max_records) * 2);
+		*records = (PlayerRecord**)realloc(*records, sizeof(PlayerRecord*) * (*max_records) * 2);
 		(*max_records) *= 2;
 	} 
 	
@@ -212,9 +212,9 @@ void clear_tournament_records(PlayerRecord** root){
 	
 	PlayerRecord** records = (PlayerRecord**)malloc(sizeof(PlayerRecord*) * max_records);
 	if ((*root) != NULL){
-		clear_tournament_records_helper(*root, records, &num_records, &max_records);
+		clear_tournament_records_helper(*root, &records, &num_records, &max_records);
 	}
-	
+
 	for (int i=0; i<num_records; i++){
 		free(records[i]);
 	}
