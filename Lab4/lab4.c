@@ -177,10 +177,10 @@ void clear_tournament_records_helper(
 		<*num_records> is updated to reflect the total number 
 		of records.
 	*/
-
+		
 	if ((*max_records) == (*num_records)){
 		// resize
-		*records = (PlayerRecord**)realloc(*records, sizeof(PlayerRecord*) * (*max_records) * 2);
+		(*records) = realloc(*records, sizeof(PlayerRecord*) * (*max_records) * 2);
 		(*max_records) *= 2;
 	} 
 	
@@ -214,7 +214,7 @@ void clear_tournament_records(PlayerRecord** root){
 	if ((*root) != NULL){
 		clear_tournament_records_helper(*root, &records, &num_records, &max_records);
 	}
-
+	
 	for (int i=0; i<num_records; i++){
 		free(records[i]);
 	}
@@ -303,6 +303,7 @@ void print_with_rank(PlayerRecord* root){
 		}
 		curr_rank++;
 	} while (count_el != 0);
+	
 	free(players_at_curr_rank);
 }
 
