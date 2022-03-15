@@ -99,15 +99,15 @@ PlayerRecord* add_match(
 		new_record -> player = p1 -> player;
 		new_record -> game_records[WINS] = p1_wins;
 		new_record -> game_records[LOSSES] = p2_wins;
-		new_record -> left_child = p1;
-		new_record -> right_child = p2;	
+		new_record -> left_child = p2;
+		new_record -> right_child = p1;	
 	}
 	else{
 		new_record -> player = p2 -> player;
 		new_record -> game_records[WINS] = p2_wins;
 		new_record -> game_records[LOSSES] = p1_wins;
-		new_record -> left_child = p2;
-		new_record -> right_child = p1;
+		new_record -> left_child = p1;
+		new_record -> right_child = p2;
 	}
 	new_record -> parent = NULL;
 	
