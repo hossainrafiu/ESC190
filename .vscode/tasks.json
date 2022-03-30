@@ -90,6 +90,29 @@
 			],
 			"group": "build",
 			"detail": "compiler: /usr/bin/gcc"
+		},
+		{
+			"type": "cppbuild",
+			"label": "(Lab 5) C/C++: gcc build all file",
+			"command": "/usr/bin/gcc",
+			"args": [
+				"-fdiagnostics-color=always",
+				"-g",
+				"test5.c",
+				"lab5.c",
+				"lab5.h",
+				"extras.c",
+				"-o",
+				"${fileDirname}/lab5"
+			],
+			"options": {
+				"cwd": "${fileDirname}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build",
+			"detail": "compiler: /usr/bin/gcc"
 		}
 	]
 }

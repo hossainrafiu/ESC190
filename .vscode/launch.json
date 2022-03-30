@@ -76,6 +76,27 @@
   ],
   "preLaunchTask": "(Lab 4) C/C++: gcc build all file",
   "miDebuggerPath": "/usr/bin/gdb"
+},
+{
+  "name": "(lab 5) gcc - Build and debug active file",
+  "type": "cppdbg",
+  "request": "launch",
+  "program": "${fileDirname}/lab5",
+  "args": [],
+  "stopAtEntry": false,
+  "cwd": "${fileDirname}",
+  "environment": [],
+  "externalConsole": false,
+  "MIMode": "gdb",
+  "setupCommands": [
+      {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+      }
+  ],
+  "preLaunchTask": "(Lab 5) C/C++: gcc build all file",
+  "miDebuggerPath": "/usr/bin/gdb"
 }
     
   ]
