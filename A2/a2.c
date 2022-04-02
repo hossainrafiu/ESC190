@@ -45,7 +45,7 @@ char *gen_code(char *msg){
     }
     ecr_msg[(strlen(msg)+1)*7] = '0';
 
-    printf("%s\n\n", ecr_msg);
+    //printf("%s\n\n", ecr_msg);
 
     char* code = (char*) calloc(sizeof(char), 257);
     int i = 0;
@@ -286,7 +286,7 @@ int min(int a, int b, int c) {
 }
 
 // double check function
-int calc_ld(char *sandy, char *cima){
+int calc_ld2(char *sandy, char *cima){
     //printf("%d, %d\n", strlen(sandy), strlen(cima));
     if(strlen(sandy) == 0) {
         return strlen(cima);
@@ -308,9 +308,36 @@ int calc_ld(char *sandy, char *cima){
     }
  }
 
+int calc_ld(char *sandy, char *cima){
+    int **array = (int**)calloc(sizeof(int*),strlen(sandy)+1);
+    for (int i = 0; i < strlen(sandy)+1; i++){
+        array[i] = (int*)calloc(sizeof(int),strlen(cima)+1);
+        array[i][0]=i;
+    }
+    for (int i = 0; i < strlen(cima)+1; i++){
+        array[0][i] = i;
+    }
+    for (int i = 1; i < strlen(sandy)+1; i++){
+        for (int j = 1; j < strlen(cima)+1; j++){
+            if(sandy[i-1] == cima[j-1]){
+                array[i][j] = array[i-1][j-1];
+            }
+            else{
+                int temp = min(array[i-1][j], array[i][j-1], array[i-1][j-1]);
+                array[i][j] = 1 + temp;
+            }
+        }
+    }
+    int ld = array[strlen(sandy)][strlen(cima)];
+    for (int i = 0; i < strlen(sandy)+1; i++){
+        free(array[i]);
+    }
+    free(array);
+    return ld;
+}
 
 ////////////////////
-
+/*
 int main(){
     printf("%d\n", bitwise_xor('C'));
     
@@ -340,3 +367,4 @@ int main(){
     printf("%d\n", calc_ld("COMMENCE", "PROCRASTINATING"));
 
 }
+*/
