@@ -199,7 +199,7 @@ void update(Graph *gr, char *start, char *dest, int weight){
             }
             else {
                 start_node -> edges = current_edge -> next;
-                free(current_edge -> vertex); //?
+                // free(current_edge -> vertex); //?
                 free(current_edge);
             }
             return;
@@ -212,7 +212,7 @@ void update(Graph *gr, char *start, char *dest, int weight){
                 else {
                     Enode* temp = current_edge -> next;
                     current_edge -> next = current_edge -> next -> next;
-                    free(temp -> vertex); //?
+                    //free(temp -> vertex); //?
                     free(temp);
                 }
                 return;

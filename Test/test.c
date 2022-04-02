@@ -1,19 +1,10 @@
-#include <stdio.h>
-
-int main(){
-
-    int temp = 1;
-    int *test = &temp, count = 0;
-
-    printf("%d", *test);
-
-    while (!(count == 100)){
-
-        count ++;
-        test = test + 1;
-        printf("%d \n",*test);
-
-    }
-
-    return 0;
+#include<stdio.h>
+#include<math.h>
+int main() {
+double a = 7.5 ;//  assigning values to the declared variables a,b.
+double b = 3.0 ;
+double power ;  // this variable will store the value of power
+power = pow (a, b) ; // calling power function for calculation
+printf ( " The value of a raised to the power b is : %lf " , power );
+return 0 ;
 }

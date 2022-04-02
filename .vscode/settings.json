@@ -4,7 +4,8 @@
   "files.associations": {
     "stdio.h": "c",
     "lab1.h": "c",
-    "stdlib.h": "c"
+    "stdlib.h": "c",
+    "a2.h": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "/bin/gcc",
   "C_Cpp_Runner.cppCompilerPath": "C:/msys64/mingw64/bin/g++.exe",
