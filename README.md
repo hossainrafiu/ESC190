@@ -20,4 +20,4 @@ Manually implemented a list using Last-in-First-Out and a list sorting function.
 Manually implemented a queue and pop, push functions, and multiple functions and unique classes.
 
 # Lab 5
-Manually implemented a minimal path-finding algorithm with my own self-implemented queue
+Manually implemented a minimal path-finding algorithm with my own manually implemented queue
