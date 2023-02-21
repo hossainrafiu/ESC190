@@ -2,23 +2,22 @@
 ESC190 - Computer Systems &amp; Data Structures - Labs/Assignments
 
 # Assignment 1
-Created an RPG game with points, user-states, and tracked time for tasks completed.
+Created a resturant tracking system that can take orders and put them in a queue, calculate order costs and give overall resurant stats.
 
 # Assignment 2
-Created a gomoku game in python with complete analysis code on points calculation and winner of match.
+Created a QR code generator and debugger.
 
 # Lab 1
-Learning to use Conditional Statements, functions, and arguments.
+Learning the basic syntax of C, if statements, for statements, function declaration.
 
 # Lab 2
-Coding functions, Using global variables and main block
+Coding Functions in C and mastering the basic variable types in C.
 
 # Lab 3
-Using parameters, global variables, "static" variables
-Testing Functions with testing code
+Manually implemented a list using Last-in-First-Out and a list sorting function.
 
 # Lab 4
-Coding functions and sub-function, Using for loops
+Manually implemented a queue and pop, push functions, and multiple functions and unique classes.
 
 # Lab 5
-Coding complex functions with if and for statements
+Manually implemented a minimal path-finding algorithm with my own self-implemented queue
